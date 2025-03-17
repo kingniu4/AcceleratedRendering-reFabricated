@@ -8,12 +8,9 @@ import com.github.argon4w.acceleratedrendering.core.utils.ResourceLocationUtils;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 
-@EventBusSubscriber(modid = AcceleratedRenderingModEntry.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class OrientationCullingPrograms {
 
 
