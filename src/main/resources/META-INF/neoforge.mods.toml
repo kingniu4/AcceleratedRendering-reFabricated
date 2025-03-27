@@ -76,10 +76,6 @@ config="${mod_id}.feature.items.mixins.json"
 [[mixins]]
 config="${mod_id}.feature.text.mixins.json"
 
-# Simple Normal Culling Feature Mixins
-[[mixins]]
-config="${mod_id}.feature.culling.mixins.json"
-
 # Touhou Little Maid Acceleration Feature Mixins
 [[mixins]]
 config="${mod_id}.feature.touhoulittlemaid.mixins.json"

@@ -136,7 +136,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html54
     implementation "maven.modrinth:sodium:mc1.21.1-0.6.9-neoforge"
     implementation "maven.modrinth:iris:1.8.8+1.21.1-neoforge"
-    compileOnly "com.github.tartaricacid:touhoulittlemaid-1.21.1:release-1.2.2"
+    implementation "com.github.tartaricacid:touhoulittlemaid-1.21.1:release-1.2.2"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
