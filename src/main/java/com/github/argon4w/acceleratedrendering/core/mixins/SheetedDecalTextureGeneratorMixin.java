@@ -20,9 +20,9 @@ import java.nio.ByteBuffer;
 public class SheetedDecalTextureGeneratorMixin implements IAcceleratedVertexConsumer {
 
     @Shadow @Final private VertexConsumer delegate;
-    @Shadow @Final public Matrix4f cameraInversePose;
-    @Shadow @Final public Matrix3f normalInversePose;
-    @Shadow @Final public float textureScale;
+    @Shadow @Final private Matrix4f cameraInversePose;
+    @Shadow @Final private Matrix3f normalInversePose;
+    @Shadow @Final private float textureScale;
 
     @Unique
     @Override

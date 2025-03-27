@@ -33,7 +33,7 @@ public class ModelPartMixin implements IAcceleratedRenderer<Void> {
     @Unique private final Map<IBufferGraph, IMesh> meshes = new Object2ObjectOpenHashMap<>();
 
     @Inject(method = "compile", at = @At("HEAD"), cancellable = true)
-    public void compile(
+    public void compileFast(
             PoseStack.Pose pPose,
             VertexConsumer pBuffer,
             int pPackedLight,

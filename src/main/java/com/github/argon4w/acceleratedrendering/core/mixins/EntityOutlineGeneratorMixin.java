@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.Unique;
 
 import java.nio.ByteBuffer;
 
-@Mixin(OutlineBufferSource.EntityOutlineGenerator.class)
+@Mixin(targets = "net.minecraft.client.renderer.OutlineBufferSource$EntityOutlineGenerator")
 public class EntityOutlineGeneratorMixin implements IAcceleratedVertexConsumer {
 
     @Shadow @Final private VertexConsumer delegate;

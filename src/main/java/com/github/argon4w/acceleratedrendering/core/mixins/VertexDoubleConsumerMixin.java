@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.Unique;
 
 import java.nio.ByteBuffer;
 
-@Mixin(VertexMultiConsumer.Double.class)
+@Mixin(targets = "com.mojang.blaze3d.vertex.VertexMultiConsumer$Double")
 public class VertexDoubleConsumerMixin implements IAcceleratedVertexConsumer {
 
     @Shadow @Final private VertexConsumer first;

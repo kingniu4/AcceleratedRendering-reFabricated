@@ -69,7 +69,7 @@ public class TextureUtils {
 
             nativeImage.downloadTexture(mipmapLevel, false);
 
-            IMAGES.put(textureResourceLocation, nativeImage);
+            IMAGES.putAndMoveToFirst(textureResourceLocation, nativeImage);
 
             if (IMAGES.size() > CoreFeature.getCachedImageSize()) {
                 IMAGES.removeLast().close();

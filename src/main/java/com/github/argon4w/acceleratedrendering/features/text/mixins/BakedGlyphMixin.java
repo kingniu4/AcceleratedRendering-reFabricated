@@ -24,7 +24,7 @@ public class BakedGlyphMixin {
     @Unique private final AcceleratedBakedGlyphRenderer italicRenderer = new AcceleratedBakedGlyphRenderer((BakedGlyph) (Object) this, true);
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
-    public void render(
+    public void renderFast(
             boolean pItalic,
             float pX,
             float pY,
