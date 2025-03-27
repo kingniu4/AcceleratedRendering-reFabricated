@@ -15,7 +15,8 @@ public class CoreBuffers {
     public static final AcceleratedBufferSource POS_COLOR_TEX_LIGHT = new AcceleratedBufferSource(IBufferEnvironment.Presets.POS_COLOR_TEX_LIGHT);
     public static final AcceleratedBufferSource POS_TEX_COLOR = new AcceleratedBufferSource(IBufferEnvironment.Presets.POS_TEX_COLOR);
 
-    public static final RedirectingBufferSource CORE = RedirectingBufferSource.builder()
+    public static final RedirectingBufferSource CORE = RedirectingBufferSource
+            .builder()
             .fallback(Minecraft.getInstance().renderBuffers().bufferSource())
             .bufferSource(BLOCK)
             .bufferSource(ENTITY)
@@ -27,7 +28,8 @@ public class CoreBuffers {
             .fallbackName("energy_swirl")
             .build();
 
-    public static final RedirectingBufferSource OUTLINE = RedirectingBufferSource.builder()
+    public static final RedirectingBufferSource OUTLINE = RedirectingBufferSource
+            .builder()
             .fallback(Minecraft.getInstance().renderBuffers().outlineBufferSource())
             .bufferSource(POS_TEX_COLOR)
             .mode(VertexFormat.Mode.QUADS)

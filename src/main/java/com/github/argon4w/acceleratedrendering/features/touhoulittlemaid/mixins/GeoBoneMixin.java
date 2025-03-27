@@ -12,7 +12,6 @@ import com.github.tartaricacid.touhoulittlemaid.geckolib3.geo.render.built.GeoQu
 import com.github.tartaricacid.touhoulittlemaid.geckolib3.geo.render.built.GeoVertex;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.RenderType;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;

@@ -8,28 +8,30 @@ import it.unimi.dsi.fastutil.objects.*;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 
+import java.util.Set;
+
 public class RedirectingBufferSource extends MultiBufferSource.BufferSource {
 
-    private final ObjectSet<IAcceleratedBufferSource> bufferSources;
-    private final ReferenceSet<VertexFormat.Mode> modes;
-    private final ObjectSet<String> fallbackNames;
-    private final MultiBufferSource fallbackBufferSource;
-    private final boolean supportSort;
+    private final Set<IAcceleratedBufferSource> bufferSources;
+    private final Set<VertexFormat.Mode> availableModes;
+    private final Set<String> fallbackNames;
+    private final MultiBufferSource fallbackSource;
+    private final boolean supportSorting;
 
     private RedirectingBufferSource(
-            ObjectSet<IAcceleratedBufferSource> bufferSources,
-            ReferenceSet<VertexFormat.Mode> modes,
-            ObjectSet<String> fallbackNames,
-            MultiBufferSource fallbackBufferSource,
-            boolean supportSort
+            Set<IAcceleratedBufferSource> bufferSources,
+            Set<VertexFormat.Mode> availableModes,
+            Set<String> fallbackNames,
+            MultiBufferSource fallbackSource,
+            boolean supportSorting
     ) {
         super(null, null);
 
         this.bufferSources = bufferSources;
-        this.modes = modes;
+        this.availableModes = availableModes;
         this.fallbackNames = fallbackNames;
-        this.fallbackBufferSource = fallbackBufferSource;
-        this.supportSort = supportSort;
+        this.fallbackSource = fallbackSource;
+        this.supportSorting = supportSorting;
     }
 
     @Override
@@ -49,16 +51,16 @@ public class RedirectingBufferSource extends MultiBufferSource.BufferSource {
 
     @Override
     public VertexConsumer getBuffer(RenderType pRenderType) {
-        if (!CoreFeature.shouldForceAccelerateTranslucent() && pRenderType.sortOnUpload && !supportSort) {
-            return fallbackBufferSource.getBuffer(pRenderType);
+        if (!CoreFeature.shouldForceAccelerateTranslucent() && pRenderType.sortOnUpload && !supportSorting) {
+            return fallbackSource.getBuffer(pRenderType);
         }
 
-        if (!modes.contains(pRenderType.mode)) {
-            return fallbackBufferSource.getBuffer(pRenderType);
+        if (!availableModes.contains(pRenderType.mode)) {
+            return fallbackSource.getBuffer(pRenderType);
         }
 
         if (fallbackNames.contains(pRenderType.name)) {
-            return fallbackBufferSource.getBuffer(pRenderType);
+            return fallbackSource.getBuffer(pRenderType);
         }
 
         for (IAcceleratedBufferSource bufferSource : bufferSources) {
@@ -67,7 +69,7 @@ public class RedirectingBufferSource extends MultiBufferSource.BufferSource {
             }
         }
 
-        return fallbackBufferSource.getBuffer(pRenderType);
+        return fallbackSource.getBuffer(pRenderType);
     }
 
     public static Builder builder() {
@@ -76,54 +78,54 @@ public class RedirectingBufferSource extends MultiBufferSource.BufferSource {
 
     public static class Builder {
 
-        private final ObjectSet<IAcceleratedBufferSource> bufferSources;
-        private final ReferenceSet<VertexFormat.Mode> modes;
-        private final ObjectSet<String> fallbackNames;
+        private final Set<IAcceleratedBufferSource> bufferSources;
+        private final Set<VertexFormat.Mode> availableModes;
+        private final Set<String> fallbackNames;
 
-        private boolean supportSort;
-        private MultiBufferSource fallbackBufferSource;
+        private boolean supportSorting;
+        private MultiBufferSource fallbackSource;
 
         private Builder() {
             this.bufferSources = new ObjectArraySet<>();
-            this.modes = new ReferenceOpenHashSet<>();
+            this.availableModes = new ReferenceOpenHashSet<>();
             this.fallbackNames = new ObjectOpenHashSet<>();
 
-            this.supportSort = false;
-            this.fallbackBufferSource = null;
+            this.supportSorting = false;
+            this.fallbackSource = null;
         }
 
-        public Builder fallback(MultiBufferSource fallback) {
-            this.fallbackBufferSource = fallback;
+        public Builder fallback(MultiBufferSource bufferSource) {
+            fallbackSource = bufferSource;
             return this;
         }
 
-        public Builder bufferSource(IAcceleratedBufferSource source) {
-            this.bufferSources.add(source);
+        public Builder bufferSource(IAcceleratedBufferSource bufferSource) {
+            bufferSources.add(bufferSource);
             return this;
         }
 
         public Builder mode(VertexFormat.Mode mode) {
-            this.modes.add(mode);
+            availableModes.add(mode);
             return this;
         }
 
         public Builder fallbackName(String name) {
-            this.fallbackNames.add(name);
+            fallbackNames.add(name);
             return this;
         }
 
         public Builder supportSort() {
-            this.supportSort = true;
+            supportSorting = true;
             return this;
         }
 
         public RedirectingBufferSource build() {
             return new RedirectingBufferSource(
                     bufferSources,
-                    modes,
+                    availableModes,
                     fallbackNames,
-                    fallbackBufferSource,
-                    supportSort
+                    fallbackSource,
+                    supportSorting
             );
         }
     }
