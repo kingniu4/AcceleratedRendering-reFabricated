@@ -2,10 +2,10 @@ package com.github.argon4w.acceleratedrendering.core.meshes;
 
 import com.github.argon4w.acceleratedrendering.core.backends.buffers.MappedBuffer;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IAcceleratedVertexConsumer;
+import com.github.argon4w.acceleratedrendering.core.meshes.collectors.MeshCollector;
 import com.github.argon4w.acceleratedrendering.core.utils.LazyMap;
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import org.lwjgl.system.MemoryUtil;
 
 import java.nio.ByteBuffer;
@@ -44,7 +44,7 @@ public class ServerMesh implements IMesh {
         public final Map<VertexFormat, MappedBuffer> storageBuffers;
 
         private Builder() {
-            this.storageBuffers = new LazyMap<>(new Object2ObjectLinkedOpenHashMap<>(), () -> new MappedBuffer(1024L, true));
+            this.storageBuffers = new LazyMap<>(() -> new MappedBuffer(1024L, true));
         }
 
         @Override

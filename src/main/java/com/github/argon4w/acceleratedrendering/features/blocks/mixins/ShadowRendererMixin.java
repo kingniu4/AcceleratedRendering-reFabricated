@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.BlockDestructionProgress;
 import org.apache.commons.lang3.mutable.MutableInt;
@@ -110,8 +111,8 @@ public class ShadowRendererMixin {
             if (progress >= 0) {
                 bufferSource = new SimpleCrumblingBufferSource(
                         bufferSource,
-                        progress,
-                        poseStack,
+                        bufferSource.getBuffer(ModelBakery.DESTROY_TYPES.get(progress)),
+                        poseStack.last(),
                         1.0f
                 );
             }

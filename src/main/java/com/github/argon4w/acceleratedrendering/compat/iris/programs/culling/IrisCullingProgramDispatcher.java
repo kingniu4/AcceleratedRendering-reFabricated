@@ -18,6 +18,7 @@ public class IrisCullingProgramDispatcher implements IPolygonProgramDispatcher {
     private final VertexFormat.Mode mode;
     private final ComputeProgram program;
     private final Uniform viewMatrixUniform;
+    private final Uniform projectMatrixUniform;
     private final Uniform polygonCountUniform;
     private final Uniform vertexOffsetUniform;
 
@@ -25,6 +26,7 @@ public class IrisCullingProgramDispatcher implements IPolygonProgramDispatcher {
         this.mode = mode;
         this.program = ComputeShaderProgramLoader.getProgram(key);
         this.viewMatrixUniform = program.getUniform("viewMatrix");
+        this.projectMatrixUniform = this.program.getUniform("projectMatrix");
         this.polygonCountUniform = program.getUniform("polygonCount");
         this.vertexOffsetUniform = program.getUniform("vertexOffset");
     }
@@ -36,6 +38,7 @@ public class IrisCullingProgramDispatcher implements IPolygonProgramDispatcher {
         int polygonCount = vertexCount / mode.primitiveLength;
 
         viewMatrixUniform.uploadMatrix4f(ShadowRenderingState.areShadowsCurrentlyBeingRendered() ? ShadowRenderer.MODELVIEW : RenderSystem.getModelViewMatrix());
+        projectMatrixUniform.uploadMatrix4f(ShadowRenderingState.areShadowsCurrentlyBeingRendered() ? ShadowRenderer.PROJECTION : RenderSystem.getProjectionMatrix());
         polygonCountUniform.uploadUnsignedInt(polygonCount);
         vertexOffsetUniform.uploadUnsignedInt(vertexOffset);
 

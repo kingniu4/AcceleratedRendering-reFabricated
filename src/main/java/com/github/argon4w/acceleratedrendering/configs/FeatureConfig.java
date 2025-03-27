@@ -32,12 +32,12 @@ public class FeatureConfig {
     public final ModConfigSpec.ConfigValue<PipelineSetting> acceleratedBlockEntityRenderingDefaultPipeline;
     public final ModConfigSpec.ConfigValue<MeshType> acceleratedBlockEntityRenderingMeshType;
 
-    public final ModConfigSpec.ConfigValue<FeatureStatus> normalCullingFeatureStatus;
-    public final ModConfigSpec.ConfigValue<FeatureStatus> normalCullingDefaultCulling;
-    public final ModConfigSpec.ConfigValue<FeatureStatus> normalCullingIgnoreCullState;
+    public final ModConfigSpec.ConfigValue<FeatureStatus> orientationCullingFeatureStatus;
+    public final ModConfigSpec.ConfigValue<FeatureStatus> orientationCullingDefaultCulling;
+    public final ModConfigSpec.ConfigValue<FeatureStatus> orientationCullingIgnoreCullState;
 
     public final ModConfigSpec.ConfigValue<FeatureStatus> irisCompatFeatureStatus;
-    public final ModConfigSpec.ConfigValue<FeatureStatus> irisCompatNormalCullingCompat;
+    public final ModConfigSpec.ConfigValue<FeatureStatus> irisCompatOrientationCullingCompat;
     public final ModConfigSpec.ConfigValue<FeatureStatus> irisCompatShadowCulling;
     public final ModConfigSpec.ConfigValue<FeatureStatus> irisCompatEntitiesCompat;
     public final ModConfigSpec.ConfigValue<FeatureStatus> irisCompatPolygonProcessing;
@@ -62,14 +62,14 @@ public class FeatureConfig {
                 .comment("Count of buffer sets that holds data for in-flight frame rendering.")
                 .comment("Changing this value may affects your FPS. Smaller value means less in-flight frames, while larger values means more in-flight frames. More in-flight frames means more FPS but more VRAM.")
                 .translation("acceleratedrendering.configuration.core_settings.pooled_buffer_set_size")
-                .defineInRange("pooled_buffer_set_size", 5, 0, Integer.MAX_VALUE);
+                .defineInRange("pooled_buffer_set_size", 5, 1, Integer.MAX_VALUE);
 
         corePooledElementBufferSize = builder
                 .gameRestart()
                 .comment("Count of batches of RenderTypes that is allowed in a draw call.")
                 .comment("Changing this value may affects your FPS. Smaller value means less batches allowed in a draw call, while larger values means more batches. More batches means more FPS but more VRAM and more CPU pressure on handling RenderTypes.")
                 .translation("acceleratedrendering.configuration.core_settings.pooled_element_buffer_size")
-                .defineInRange("pooled_element_buffer_size", 32, 0, Integer.MAX_VALUE);
+                .defineInRange("pooled_element_buffer_size", 32, 1, Integer.MAX_VALUE);
 
         coreCachedImageSize = builder
                 .comment("Count of images that cached for static mesh culling.")
@@ -206,27 +206,27 @@ public class FeatureConfig {
         builder.pop();
 
         builder
-                .comment("Simple Normal Face Culling Settings")
-                .comment("Simple Normal face culling uses an compute shader before the draw call to discard faces that is not visible on screen by checking if the normal is facing to the screen.")
-                .translation("acceleratedrendering.configuration.normal_culling")
-                .push("normal_culling");
+                .comment("Simple Orientation Face Culling Settings")
+                .comment("Simple Orientation face culling uses an compute shader before the draw call to discard faces that is not visible on screen by checking if it is facing to the screen using a determinant of 3 * 3 matrix.")
+                .translation("acceleratedrendering.configuration.orientation_culling")
+                .push("orientation_culling");
 
-        normalCullingFeatureStatus = builder
-                .comment("- DISABLED: Disable simple normal face culling.")
-                .comment("- ENABLED: Enable simple normal face culling.")
-                .translation("acceleratedrendering.configuration.normal_culling.feature_status")
+        orientationCullingFeatureStatus = builder
+                .comment("- DISABLED: Disable simple orientation face culling.")
+                .comment("- ENABLED: Enable simple orientation face culling.")
+                .translation("acceleratedrendering.configuration.orientation_culling.feature_status")
                 .defineEnum("feature_Status", FeatureStatus.ENABLED);
 
-        normalCullingDefaultCulling = builder
+        orientationCullingDefaultCulling = builder
                 .comment("- DISABLED: Faces will not be culled unless mods explicitly enable it temporarily when rendering their own faces.")
                 .comment("- ENABLED: All faces will be culled unless mods explicitly disable it temporarily when rendering their own faces.")
-                .translation("acceleratedrendering.configuration.normal_culling.default_culling")
+                .translation("acceleratedrendering.configuration.orientation_culling.default_culling")
                 .defineEnum("default_culling", FeatureStatus.ENABLED);
 
-        normalCullingIgnoreCullState = builder
-                .comment("- DISABLED: Simple normal face culling will not cull entities that are not declared as \"cullable\".")
-                .comment("- ENABLED: Simple normal face culling will cull all entities even if they are not declared as \"cullable\".")
-                .translation("acceleratedrendering.configuration.normal_culling.ignore_cull_state")
+        orientationCullingIgnoreCullState = builder
+                .comment("- DISABLED: Simple orientation face culling will not cull entities that are not declared as \"cullable\".")
+                .comment("- ENABLED: Simple orientation face culling will cull all entities even if they are not declared as \"cullable\".")
+                .translation("acceleratedrendering.configuration.orientation_culling.ignore_cull_state")
                 .defineEnum("ignore_cull_state", FeatureStatus.DISABLED);
 
         builder.pop();
@@ -243,11 +243,11 @@ public class FeatureConfig {
                 .translation("acceleratedrendering.configuration.iris_compatibility.feature_status")
                 .defineEnum("feature_status", FeatureStatus.ENABLED);
 
-        irisCompatNormalCullingCompat = builder
-                .comment("- DISABLED: Simple Normal culling will not work with Iris because the culling shader is for vanilla's vertex formats.")
-                .comment("- ENABLED: Normal culling will use another culling shader that fits iris's vertex format, which make it compatible with Iris.")
-                .translation("acceleratedrendering.configuration.iris_compatibility.normal_culling_compatibility")
-                .defineEnum("normal_culling_compatibility", FeatureStatus.ENABLED);
+        irisCompatOrientationCullingCompat = builder
+                .comment("- DISABLED: Simple Orientation culling will not work with Iris because the culling shader is for vanilla's vertex formats.")
+                .comment("- ENABLED: Simple Orientation culling will use another culling shader that fits iris's vertex format, which make it compatible with Iris.")
+                .translation("acceleratedrendering.configuration.iris_compatibility.orientation_culling_compatibility")
+                .defineEnum("orientation_culling_compatibility", FeatureStatus.ENABLED);
 
         irisCompatShadowCulling = builder
                 .comment("- DISABLED: Entities will not be culled when they are rendered as shadows unless mods explicitly enable it temporarily when rendering their own shadows. Which reduce FPS due to redundant faces.")

@@ -1,4 +1,4 @@
-package com.github.argon4w.acceleratedrendering.core.meshes;
+package com.github.argon4w.acceleratedrendering.core.meshes.collectors;
 
 import com.github.argon4w.acceleratedrendering.core.utils.MemUtils;
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;

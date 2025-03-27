@@ -2,6 +2,8 @@ package com.github.argon4w.acceleratedrendering.core.backends.buffers;
 
 import org.lwjgl.system.MemoryStack;
 
+import java.nio.ByteBuffer;
+
 import static org.lwjgl.opengl.GL46.*;
 
 public class ImmutableBuffer implements IServerBuffer {
@@ -12,18 +14,8 @@ public class ImmutableBuffer implements IServerBuffer {
         this.bufferHandle = glCreateBuffers();
 
         glNamedBufferStorage(
-                bufferHandle,
+                this.bufferHandle,
                 size,
-                bits
-        );
-    }
-
-    public ImmutableBuffer(int bits, int[] data) {
-        this.bufferHandle = glCreateBuffers();
-
-        glNamedBufferStorage(
-                bufferHandle,
-                data,
                 bits
         );
     }
@@ -81,10 +73,13 @@ public class ImmutableBuffer implements IServerBuffer {
     @Override
     public void clearInteger(long offset, int value) {
         try (MemoryStack stack = MemoryStack.stackPush()) {
-            BufferClearType.INTEGER.clear(
+            glClearNamedBufferSubData(
                     bufferHandle,
+                    GL_R32UI,
                     offset,
                     Integer.BYTES,
+                    GL_RED_INTEGER,
+                    GL_UNSIGNED_INT,
                     stack.malloc(4).putInt(0, value)
             );
         }
@@ -92,11 +87,14 @@ public class ImmutableBuffer implements IServerBuffer {
 
     @Override
     public void clearBytes(long offset, long size) {
-        BufferClearType.BYTE.clear(
+        glClearNamedBufferSubData(
                 bufferHandle,
+                GL_R8UI,
                 offset,
                 size,
-                null
+                GL_RED,
+                GL_UNSIGNED_BYTE,
+                (ByteBuffer) null
         );
     }
 

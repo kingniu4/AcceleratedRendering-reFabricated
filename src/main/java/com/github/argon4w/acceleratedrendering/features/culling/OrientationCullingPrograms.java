@@ -13,7 +13,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 
 @EventBusSubscriber(modid = AcceleratedRenderingModEntry.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-public class NormalCullingPrograms {
+public class OrientationCullingPrograms {
 
 
 
@@ -87,49 +87,49 @@ public class NormalCullingPrograms {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onLoadCullingPrograms(LoadCullingProgramSelectorEvent event) {
-        event.loadFor(DefaultVertexFormat.NEW_ENTITY, parent -> new NormalCullingProgramSelector(
+        event.loadFor(DefaultVertexFormat.NEW_ENTITY, parent -> new OrientationCullingProgramSelector(
                 parent,
                 VertexFormat.Mode.TRIANGLES,
                 CORE_ENTITY_TRIANGLE_CULLING_KEY
         ));
 
-        event.loadFor(DefaultVertexFormat.NEW_ENTITY, parent -> new NormalCullingProgramSelector(
+        event.loadFor(DefaultVertexFormat.NEW_ENTITY, parent -> new OrientationCullingProgramSelector(
                 parent,
                 VertexFormat.Mode.QUADS,
                 CORE_ENTITY_QUAD_CULLING_KEY
         ));
 
-        event.loadFor(DefaultVertexFormat.BLOCK, parent -> new NormalCullingProgramSelector(
+        event.loadFor(DefaultVertexFormat.BLOCK, parent -> new OrientationCullingProgramSelector(
                 parent,
                 VertexFormat.Mode.TRIANGLES,
                 CORE_BLOCK_TRIANGLE_CULLING_KEY
         ));
 
-        event.loadFor(DefaultVertexFormat.BLOCK, parent -> new NormalCullingProgramSelector(
+        event.loadFor(DefaultVertexFormat.BLOCK, parent -> new OrientationCullingProgramSelector(
                 parent,
                 VertexFormat.Mode.QUADS,
                 CORE_BLOCK_QUAD_CULLING_KEY
         ));
 
-        event.loadFor(DefaultVertexFormat.POSITION_TEX_COLOR, parent -> new NormalCullingProgramSelector(
+        event.loadFor(DefaultVertexFormat.POSITION_TEX_COLOR, parent -> new OrientationCullingProgramSelector(
                 parent,
                 VertexFormat.Mode.TRIANGLES,
                 CORE_POS_TEX_COLOR_TRIANGLE_CULLING_KEY
         ));
 
-        event.loadFor(DefaultVertexFormat.POSITION_TEX_COLOR, parent -> new NormalCullingProgramSelector(
+        event.loadFor(DefaultVertexFormat.POSITION_TEX_COLOR, parent -> new OrientationCullingProgramSelector(
                 parent,
                 VertexFormat.Mode.QUADS,
                 CORE_POS_TEX_COLOR_QUAD_CULLING_KEY
         ));
 
-        event.loadFor(DefaultVertexFormat.POSITION_TEX, parent -> new NormalCullingProgramSelector(
+        event.loadFor(DefaultVertexFormat.POSITION_TEX, parent -> new OrientationCullingProgramSelector(
                 parent,
                 VertexFormat.Mode.TRIANGLES,
                 CORE_POS_TEX_TRIANGLE_CULLING_KEY
         ));
 
-        event.loadFor(DefaultVertexFormat.POSITION_TEX, parent -> new NormalCullingProgramSelector(
+        event.loadFor(DefaultVertexFormat.POSITION_TEX, parent -> new OrientationCullingProgramSelector(
                 parent,
                 VertexFormat.Mode.QUADS,
                 CORE_POS_TEX_QUAD_CULLING_KEY

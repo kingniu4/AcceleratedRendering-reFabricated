@@ -6,29 +6,24 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexMultiConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.resources.model.ModelBakery;
 
 public class SimpleCrumblingBufferSource implements MultiBufferSource {
 
     private final MultiBufferSource bufferSource;
     private final VertexConsumer crumblingBuffer;
 
-    public SimpleCrumblingBufferSource(MultiBufferSource bufferSource, VertexConsumer crumblingBuffer) {
-        this.bufferSource = bufferSource;
-        this.crumblingBuffer = crumblingBuffer;
-    }
-
     public SimpleCrumblingBufferSource(
             MultiBufferSource bufferSource,
-            int progress,
-            PoseStack poseStack,
+            VertexConsumer crumblingBuffer,
+            PoseStack.Pose globalTransform,
             float textureScale
     ) {
-        this(bufferSource, new SheetedDecalTextureGenerator(
-                bufferSource.getBuffer(ModelBakery.DESTROY_TYPES.get(progress)),
-                poseStack.last(),
+        this.bufferSource = bufferSource;
+        this.crumblingBuffer = new SheetedDecalTextureGenerator(
+                crumblingBuffer,
+                globalTransform,
                 textureScale
-        ));
+        );
     }
 
     @Override

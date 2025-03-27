@@ -1,5 +1,6 @@
 package com.github.argon4w.acceleratedrendering.core.utils;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,6 +19,11 @@ public class LazyMap<K, V> implements Map<K, V> {
 
     public LazyMap(Map<K, V> map, Supplier<V> supplier) {
         this.map = map;
+        this.supplier = supplier;
+    }
+
+    public LazyMap(Supplier<V> supplier) {
+        this.map = new Object2ObjectOpenHashMap<>();
         this.supplier = supplier;
     }
 

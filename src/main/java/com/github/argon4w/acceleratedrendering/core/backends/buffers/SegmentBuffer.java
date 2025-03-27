@@ -143,7 +143,7 @@ public class SegmentBuffer extends MutableBuffer {
             SegmentBuffer.this.bindRange(
                     target,
                     index,
-                    this.offset + offset,
+                    offset + this.offset,
                     size
             );
         }

@@ -6,16 +6,16 @@ import com.github.argon4w.acceleratedrendering.configs.FeatureStatus;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public class NormalCullingFeature {
+public class OrientationCullingFeature {
 
     private static final Deque<FeatureStatus> CULLING_CONTROLLER_STACK = new ArrayDeque<>();
 
     public static boolean isEnabled() {
-        return FeatureConfig.CONFIG.normalCullingFeatureStatus.get() == FeatureStatus.ENABLED;
+        return FeatureConfig.CONFIG.orientationCullingFeatureStatus.get() == FeatureStatus.ENABLED;
     }
 
     public static boolean shouldIgnoreCullState() {
-        return FeatureConfig.CONFIG.normalCullingIgnoreCullState.get() == FeatureStatus.ENABLED;
+        return FeatureConfig.CONFIG.orientationCullingIgnoreCullState.get() == FeatureStatus.ENABLED;
     }
 
     public static boolean shouldCull() {
@@ -43,7 +43,7 @@ public class NormalCullingFeature {
     }
 
     public static FeatureStatus getDefaultCullingSetting() {
-        return FeatureConfig.CONFIG.normalCullingDefaultCulling.get();
+        return FeatureConfig.CONFIG.orientationCullingDefaultCulling.get();
     }
 
     public static void checkControllerState() {

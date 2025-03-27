@@ -1,7 +1,6 @@
 package com.github.argon4w.acceleratedrendering.core.buffers.graphs;
 
 import com.github.argon4w.acceleratedrendering.core.utils.MatrixUtils;
-import net.minecraft.client.renderer.RenderType;
 import org.joml.Matrix4f;
 
 import java.util.Objects;

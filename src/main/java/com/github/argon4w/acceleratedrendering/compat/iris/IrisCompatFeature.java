@@ -16,7 +16,7 @@ public class IrisCompatFeature {
     }
 
     public static boolean isIrisCompatCullingEnabled() {
-        return FeatureConfig.CONFIG.irisCompatNormalCullingCompat.get() == FeatureStatus.ENABLED;
+        return FeatureConfig.CONFIG.irisCompatOrientationCullingCompat.get() == FeatureStatus.ENABLED;
     }
 
     public static boolean isShadowCullingEnabled() {

@@ -4,12 +4,8 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.renderers.IAcceleratedRenderer;
 import com.github.argon4w.acceleratedrendering.core.buffers.graphs.IBufferGraph;
 import com.github.argon4w.acceleratedrendering.core.meshes.IMesh;
-import com.github.argon4w.acceleratedrendering.core.meshes.MeshCollector;
-import com.github.argon4w.acceleratedrendering.core.utils.CullerUtils;
-import com.github.argon4w.acceleratedrendering.core.utils.TextureUtils;
+import com.github.argon4w.acceleratedrendering.core.meshes.collectors.MeshCollectorCuller;
 import com.github.argon4w.acceleratedrendering.features.entities.AcceleratedEntityRenderingFeature;
-import com.github.argon4w.acceleratedrendering.features.modelparts.VertexUtils;
-import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -104,27 +100,20 @@ public class ModelPartMixin implements IAcceleratedRenderer<Void> {
             return;
         }
 
-        NativeImage texture = TextureUtils.downloadTexture(renderType, 0);
-        MeshCollector meshCollector = new MeshCollector(renderType.format);
-        VertexConsumer meshBuilder = extension.decorate(meshCollector);
+        MeshCollectorCuller meshCollectorCuller = new MeshCollectorCuller(renderType);
+        VertexConsumer meshBuilder = extension.decorate(meshCollectorCuller);
 
         for (ModelPart.Cube cube : cubes) {
             for (ModelPart.Polygon polygon : cube.polygons) {
                 Vector3f polygonNormal = polygon.normal;
 
-                if (CullerUtils.shouldCull(
-                        VertexUtils.fromModelPart(polygon.vertices),
-                        texture,
-                        bufferGraph
-                )) {
-                    continue;
-                }
-
                 for (ModelPart.Vertex vertex : polygon.vertices) {
+                    Vector3f vertexPosition = vertex.pos;
+
                     meshBuilder.addVertex(
-                            vertex.pos.x / 16.0f,
-                            vertex.pos.y / 16.0f,
-                            vertex.pos.z / 16.0f,
+                            vertexPosition.x / 16.0f,
+                            vertexPosition.y / 16.0f,
+                            vertexPosition.z / 16.0f,
                             -1,
                             vertex.u,
                             vertex.v,
@@ -138,7 +127,12 @@ public class ModelPartMixin implements IAcceleratedRenderer<Void> {
             }
         }
 
-        mesh = AcceleratedEntityRenderingFeature.getMeshBuilder().build(meshCollector);
+        meshCollectorCuller.flush();
+
+        mesh = AcceleratedEntityRenderingFeature
+                .getMeshType()
+                .getBuilder()
+                .build(meshCollectorCuller.getMeshCollector());
 
         meshes.put(bufferGraph, mesh);
         mesh.write(

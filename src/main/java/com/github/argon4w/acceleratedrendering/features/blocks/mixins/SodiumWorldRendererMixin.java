@@ -11,6 +11,7 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import net.caffeinemc.mods.sodium.client.render.SodiumWorldRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.BlockDestructionProgress;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -76,8 +77,8 @@ public class SodiumWorldRendererMixin {
         if (progress >= 0) {
             bufferSource = new SimpleCrumblingBufferSource(
                     bufferSource,
-                    progress,
-                    pPoseStack,
+                    bufferSource.getBuffer(ModelBakery.DESTROY_TYPES.get(progress)),
+                    pPoseStack.last(),
                     1.0f
             );
         }

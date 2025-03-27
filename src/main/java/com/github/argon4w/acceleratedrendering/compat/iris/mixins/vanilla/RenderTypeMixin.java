@@ -6,4 +6,5 @@ import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(RenderType.class)
 public class RenderTypeMixin implements IAcceleratedUnwrap {
+
 }

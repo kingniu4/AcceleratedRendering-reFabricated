@@ -1,47 +1,32 @@
 package com.github.argon4w.acceleratedrendering.core.utils;
 
+import net.minecraft.util.FastColor;
 import org.joml.Vector2f;
+import org.joml.Vector2i;
 import org.joml.Vector3f;
+import org.joml.Vector4i;
 
 public class Vertex {
 
     private final Vector3f position;
     private final Vector2f uv;
+    private final Vector4i color;
+    private final Vector2i light;
     private final Vector3f normal;
-    private final int color;
-    private final int light;
 
-    public Vertex(
-            Vector3f position,
-            Vector2f uv,
-            Vector3f normal,
-            int color,
-            int light
-    ) {
-        this.position = position;
-        this.uv = uv;
-        this.normal = normal;
-        this.color = color;
-        this.light = light;
-    }
-
-    public Vertex(
-            Vector3f position,
-            float u,
-            float v
-    ) {
-        this.position = position;
-        this.uv = new Vector2f(u, v);
+    public Vertex() {
+        this.position = new Vector3f();
+        this.uv = new Vector2f();
+        this.color = new Vector4i();
+        this.light = new Vector2i();
         this.normal = new Vector3f();
-        this.color = -1;
-        this.light = 0;
     }
 
     public Vector3f getPosition() {
         return position;
     }
 
-    public Vector2f getUv() {
+    public Vector2f getUV() {
         return uv;
     }
 
@@ -49,11 +34,24 @@ public class Vertex {
         return normal;
     }
 
-    public int getColor() {
+    public Vector4i getColor() {
         return color;
     }
 
-    public int getLight() {
+    public Vector2i getLight() {
         return light;
+    }
+
+    public int getPackedLight() {
+        return light.x | light.y << 16;
+    }
+
+    public int getPackedColor() {
+        return FastColor.ARGB32.color(
+                color.w,
+                color.x,
+                color.y,
+                color.z
+        );
     }
 }

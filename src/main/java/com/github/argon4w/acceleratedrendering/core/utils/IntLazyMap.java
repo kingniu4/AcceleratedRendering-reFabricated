@@ -2,6 +2,7 @@ package com.github.argon4w.acceleratedrendering.core.utils;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.ObjectCollection;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
@@ -20,6 +21,11 @@ public class IntLazyMap<V> implements Int2ObjectMap<V> {
 
     public IntLazyMap(Int2ObjectMap<V> map, Supplier<V> supplier) {
         this.map = map;
+        this.supplier = supplier;
+    }
+
+    public IntLazyMap(Supplier<V> supplier) {
+        this.map = new Int2ObjectOpenHashMap<>();
         this.supplier = supplier;
     }
 

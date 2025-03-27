@@ -56,8 +56,8 @@ public class AcceleratedBufferSource extends MultiBufferSource.BufferSource impl
     }
 
     @Override
-    public IBufferEnvironment getBufferEnvironment() {
-        return bufferEnvironment;
+    public boolean isAccelerated(RenderType renderType) {
+        return bufferEnvironment.isAccelerated(renderType.format);
     }
 
     @Override

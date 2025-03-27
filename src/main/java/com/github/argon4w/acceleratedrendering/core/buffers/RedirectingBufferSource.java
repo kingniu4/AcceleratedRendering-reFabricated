@@ -16,7 +16,7 @@ public class RedirectingBufferSource extends MultiBufferSource.BufferSource {
     private final MultiBufferSource fallbackBufferSource;
     private final boolean supportSort;
 
-    public RedirectingBufferSource(
+    private RedirectingBufferSource(
             ObjectSet<IAcceleratedBufferSource> bufferSources,
             ReferenceSet<VertexFormat.Mode> modes,
             ObjectSet<String> fallbackNames,
@@ -61,9 +61,9 @@ public class RedirectingBufferSource extends MultiBufferSource.BufferSource {
             return fallbackBufferSource.getBuffer(pRenderType);
         }
 
-        for (IAcceleratedBufferSource bufferSource1 : bufferSources) {
-            if (bufferSource1.getBufferEnvironment().isAccelerated(pRenderType.format)) {
-                return bufferSource1.getBuffer(pRenderType);
+        for (IAcceleratedBufferSource bufferSource : bufferSources) {
+            if (bufferSource.isAccelerated(pRenderType)) {
+                return bufferSource.getBuffer(pRenderType);
             }
         }
 

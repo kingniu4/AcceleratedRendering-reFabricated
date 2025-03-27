@@ -57,11 +57,7 @@ public class TextureUtils {
             int width = widthBuffer.get(0);
             int height = heightBuffer.get(0);
 
-            if (width == 0) {
-                return null;
-            }
-
-            if (height == 0) {
+            if (width == 0 || height == 0) {
                 return null;
             }
 

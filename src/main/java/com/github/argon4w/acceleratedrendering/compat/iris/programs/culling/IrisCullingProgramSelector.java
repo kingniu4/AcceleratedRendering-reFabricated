@@ -1,12 +1,12 @@
 package com.github.argon4w.acceleratedrendering.compat.iris.programs.culling;
 
 import com.github.argon4w.acceleratedrendering.compat.iris.IrisCompatFeature;
-import com.github.argon4w.acceleratedrendering.core.programs.dispatchers.IPolygonProgramDispatcher;
 import com.github.argon4w.acceleratedrendering.core.programs.culling.ICullingProgramSelector;
+import com.github.argon4w.acceleratedrendering.core.programs.dispatchers.IPolygonProgramDispatcher;
 import com.github.argon4w.acceleratedrendering.core.programs.extras.FlagsExtraVertexData;
 import com.github.argon4w.acceleratedrendering.core.programs.extras.IExtraVertexData;
 import com.github.argon4w.acceleratedrendering.core.utils.RenderTypeUtils;
-import com.github.argon4w.acceleratedrendering.features.culling.NormalCullingFeature;
+import com.github.argon4w.acceleratedrendering.features.culling.OrientationCullingFeature;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.irisshaders.iris.shadows.ShadowRenderingState;
 import net.minecraft.client.renderer.RenderType;
@@ -45,7 +45,7 @@ public class IrisCullingProgramSelector implements ICullingProgramSelector {
             return parent.select(renderType);
         }
 
-        if (!NormalCullingFeature.isEnabled()) {
+        if (!OrientationCullingFeature.isEnabled()) {
             return parent.select(renderType);
         }
 
@@ -53,7 +53,7 @@ public class IrisCullingProgramSelector implements ICullingProgramSelector {
             return parent.select(renderType);
         }
 
-        if (NormalCullingFeature.shouldIgnoreCullState()) {
+        if (OrientationCullingFeature.shouldIgnoreCullState()) {
             return dispatcher;
         }
 
@@ -74,7 +74,7 @@ public class IrisCullingProgramSelector implements ICullingProgramSelector {
             return parent.getExtraVertex(mode);
         }
 
-        if (!NormalCullingFeature.isEnabled()) {
+        if (!OrientationCullingFeature.isEnabled()) {
             return parent.getExtraVertex(mode);
         }
 
@@ -86,7 +86,7 @@ public class IrisCullingProgramSelector implements ICullingProgramSelector {
             return EMPTY;
         }
 
-        if (!NormalCullingFeature.shouldCull()) {
+        if (!OrientationCullingFeature.shouldCull()) {
             return NO_CULL;
         }
 

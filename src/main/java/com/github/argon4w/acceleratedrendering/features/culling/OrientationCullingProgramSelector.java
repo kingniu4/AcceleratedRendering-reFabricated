@@ -1,7 +1,7 @@
 package com.github.argon4w.acceleratedrendering.features.culling;
 
-import com.github.argon4w.acceleratedrendering.core.programs.dispatchers.IPolygonProgramDispatcher;
 import com.github.argon4w.acceleratedrendering.core.programs.culling.ICullingProgramSelector;
+import com.github.argon4w.acceleratedrendering.core.programs.dispatchers.IPolygonProgramDispatcher;
 import com.github.argon4w.acceleratedrendering.core.programs.extras.FlagsExtraVertexData;
 import com.github.argon4w.acceleratedrendering.core.programs.extras.IExtraVertexData;
 import com.github.argon4w.acceleratedrendering.core.utils.RenderTypeUtils;
@@ -9,7 +9,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
-public class NormalCullingProgramSelector implements ICullingProgramSelector {
+public class OrientationCullingProgramSelector implements ICullingProgramSelector {
 
     public static final FlagsExtraVertexData EMPTY = new FlagsExtraVertexData();
     public static final FlagsExtraVertexData NO_CULL = new FlagsExtraVertexData(0);
@@ -18,19 +18,19 @@ public class NormalCullingProgramSelector implements ICullingProgramSelector {
     private final VertexFormat.Mode mode;
     private final IPolygonProgramDispatcher dispatcher;
 
-    public NormalCullingProgramSelector(
+    public OrientationCullingProgramSelector(
             ICullingProgramSelector parent,
             VertexFormat.Mode mode,
             ResourceLocation key
     ) {
         this.parent = parent;
         this.mode = mode;
-        this.dispatcher = new NormalCullingProgramDispatcher(mode, key);
+        this.dispatcher = new OrientationCullingProgramDispatcher(mode, key);
     }
 
     @Override
     public IPolygonProgramDispatcher select(RenderType renderType) {
-        if (!NormalCullingFeature.isEnabled()) {
+        if (!OrientationCullingFeature.isEnabled()) {
             return parent.select(renderType);
         }
 
@@ -38,7 +38,7 @@ public class NormalCullingProgramSelector implements ICullingProgramSelector {
             return parent.select(renderType);
         }
 
-        if (NormalCullingFeature.shouldIgnoreCullState()) {
+        if (OrientationCullingFeature.shouldIgnoreCullState()) {
             return dispatcher;
         }
 
@@ -51,7 +51,7 @@ public class NormalCullingProgramSelector implements ICullingProgramSelector {
 
     @Override
     public IExtraVertexData getExtraVertex(VertexFormat.Mode mode) {
-        if (!NormalCullingFeature.isEnabled()) {
+        if (!OrientationCullingFeature.isEnabled()) {
             return parent.getExtraVertex(mode);
         }
 
@@ -59,7 +59,7 @@ public class NormalCullingProgramSelector implements ICullingProgramSelector {
             return parent.getExtraVertex(mode);
         }
 
-        if (!NormalCullingFeature.shouldCull()) {
+        if (!OrientationCullingFeature.shouldCull()) {
             return EMPTY;
         }
 

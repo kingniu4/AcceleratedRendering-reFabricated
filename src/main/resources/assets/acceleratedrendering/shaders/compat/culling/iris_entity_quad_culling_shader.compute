@@ -56,8 +56,9 @@ layout(binding=6, std430) writeonly buffer PolygonsOut {
 layout(binding=0, offset=0) uniform atomic_uint indexCounter;
 
 layout(location=0) uniform mat4 viewMatrix;
-layout(location=1) uniform uint polygonCount;
-layout(location=2) uniform uint vertexOffset;
+layout(location=1) uniform mat4 projectMatrix;
+layout(location=2) uniform uint polygonCount;
+layout(location=3) uniform uint vertexOffset;
 
 bool isNormalVisable(Vertex vertex);
 
@@ -77,12 +78,20 @@ void main() {
     uint flags = varyings[index - varyings[index1].offset].flags;
     uint noCull = flags & 0x1u;
 
-    if (noCull > 0u
-    || isNormalVisable(vertices[index1])
-    || isNormalVisable(vertices[index2])
-    || isNormalVisable(vertices[index3])
-    || isNormalVisable(vertices[index4])
-    ) {
+    Vertex vertex1 = vertices[index1];
+    Vertex vertex2 = vertices[index2];
+    Vertex vertex3 = vertices[index3];
+    Vertex vertex4 = vertices[index4];
+
+    vec4 pos1 = projectMatrix * viewMatrix * vec4(vertex1.x, vertex1.y, vertex1.z, 1.0);
+    vec4 pos2 = projectMatrix * viewMatrix * vec4(vertex2.x, vertex2.y, vertex2.z, 1.0);
+    vec4 pos3 = projectMatrix * viewMatrix * vec4(vertex3.x, vertex3.y, vertex3.z, 1.0);
+    vec4 pos4 = projectMatrix * viewMatrix * vec4(vertex4.x, vertex4.y, vertex4.z, 1.0);
+
+    float det1 = determinant(mat3(pos1.xyw, pos2.xyw, pos3.xyw));
+    float det2 = determinant(mat3(pos3.xyw, pos4.xyw, pos1.xyw));
+
+    if (noCull > 0u || det1 > 0.0 || det2 > 0.0) {
         uint indexOut = atomicCounterAdd(indexCounter, 6u) / 3u;
 
         polygonsOut[indexOut + 0].vertex1 = index1;
@@ -93,19 +102,4 @@ void main() {
         polygonsOut[indexOut + 1].vertex2 = index4;
         polygonsOut[indexOut + 1].vertex3 = index1;
     }
-}
-
-bool isNormalVisable(Vertex vertex) {
-    vec3 normal = unpackSnorm4x8(vertex.normal).xyz;
-    vec4 posStart = vec4(vertex.x, vertex.y, vertex.z, 1.0);
-    vec4 posEnd = posStart + vec4(normal, 0.0);
-
-    posStart = viewMatrix * posStart;
-    posEnd = viewMatrix * posEnd;
-    normal = normalize((posEnd - posStart).xyz);
-
-    vec3 ref = normalize(-posStart.xyz);
-    float result = dot(ref, normal);
-
-    return result >= 0;
 }

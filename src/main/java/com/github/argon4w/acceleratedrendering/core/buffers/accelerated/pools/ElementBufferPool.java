@@ -76,6 +76,14 @@ public class ElementBufferPool extends SimpleResetPool<ElementBufferPool.Element
             return elementBufferOut.getSegment(size);
         }
 
+        public long getElementBytes() {
+            return elementBytes;
+        }
+
+        public int getElementCount() {
+            return (int) elementBytes / 4;
+        }
+
         private void reset() {
             elementBytes = 0L;
         }

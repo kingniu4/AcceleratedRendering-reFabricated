@@ -9,20 +9,22 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.resources.ResourceLocation;
 
-public class NormalCullingProgramDispatcher implements IPolygonProgramDispatcher {
+public class OrientationCullingProgramDispatcher implements IPolygonProgramDispatcher {
 
     private static final int GROUP_SIZE = 128;
 
     private final VertexFormat.Mode mode;
     private final ComputeProgram program;
     private final Uniform viewMatrixUniform;
+    private final Uniform projectMatrixUniform;
     private final Uniform polygonCountUniform;
     private final Uniform vertexOffsetUniform;
 
-    public NormalCullingProgramDispatcher(VertexFormat.Mode mode, ResourceLocation key) {
+    public OrientationCullingProgramDispatcher(VertexFormat.Mode mode, ResourceLocation key) {
         this.mode = mode;
         this.program = ComputeShaderProgramLoader.getProgram(key);
         this.viewMatrixUniform = this.program.getUniform("viewMatrix");
+        this.projectMatrixUniform = this.program.getUniform("projectMatrix");
         this.polygonCountUniform = this.program.getUniform("polygonCount");
         this.vertexOffsetUniform = program.getUniform("vertexOffset");
     }
@@ -34,6 +36,7 @@ public class NormalCullingProgramDispatcher implements IPolygonProgramDispatcher
         int polygonCount = vertexCount / mode.primitiveLength;
 
         viewMatrixUniform.uploadMatrix4f(RenderSystem.getModelViewMatrix());
+        projectMatrixUniform.uploadMatrix4f(RenderSystem.getProjectionMatrix());
         polygonCountUniform.uploadUnsignedInt(polygonCount);
         vertexOffsetUniform.uploadUnsignedInt(vertexOffset);
 

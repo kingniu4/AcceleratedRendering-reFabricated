@@ -47,10 +47,9 @@ layout(binding=6, std430) writeonly buffer PolygonsOut {
 layout(binding=0, offset=0) uniform atomic_uint indexCounter;
 
 layout(location=0) uniform mat4 viewMatrix;
-layout(location=1) uniform uint polygonCount;
-layout(location=2) uniform uint vertexOffset;
-
-bool isNormalVisable(vec3 pos, vec3 normal);
+layout(location=1) uniform mat4 projectMatrix;
+layout(location=2) uniform uint polygonCount;
+layout(location=3) uniform uint vertexOffset;
 
 void main() {
     uint index = gl_GlobalInvocationID.x;
@@ -71,34 +70,17 @@ void main() {
     Vertex vertex2 = vertices[index2];
     Vertex vertex3 = vertices[index3];
 
-    vec3 pos1 = vec3(vertex1.x, vertex1.y, vertex1.z);
-    vec3 pos2 = vec3(vertex2.x, vertex2.y, vertex2.z);
-    vec3 pos3 = vec3(vertex3.x, vertex3.y, vertex3.z);
-    vec3 normal = cross(pos2 - pos1, pos3 - pos1);
+    vec4 pos1 = projectMatrix * viewMatrix * vec4(vertex1.x, vertex1.y, vertex1.z, 1.0);
+    vec4 pos2 = projectMatrix * viewMatrix * vec4(vertex2.x, vertex2.y, vertex2.z, 1.0);
+    vec4 pos3 = projectMatrix * viewMatrix * vec4(vertex3.x, vertex3.y, vertex3.z, 1.0);
 
-    if (noCull > 0u
-            || isNormalVisable(pos1, normal)
-            || isNormalVisable(pos2, normal)
-            || isNormalVisable(pos3, normal)
-    ) {
+    float det = determinant(mat3(pos1.xyw, pos2.xyw, pos3.xyw));
+
+    if (noCull > 0u || det > 0.0) {
         uint indexOut = atomicCounterAdd(indexCounter, 3u) / 3u;
 
-        polygonsOut[indexOut].vertex1 = index1;
-        polygonsOut[indexOut].vertex2 = index2;
-        polygonsOut[indexOut].vertex3 = index3;
+        polygonsOut[indexOut + 0].vertex1 = index1;
+        polygonsOut[indexOut + 0].vertex2 = index2;
+        polygonsOut[indexOut + 0].vertex3 = index3;
     }
-}
-
-bool isNormalVisable(vec3 pos, vec3 normal) {
-    vec4 posStart = vec4(pos, 1.0);
-    vec4 posEnd = posStart + vec4(normal, 0.0);
-
-    posStart = viewMatrix * posStart;
-    posEnd = viewMatrix * posEnd;
-    normal = normalize((posEnd - posStart).xyz);
-
-    vec3 ref = normalize(-posStart.xyz);
-    float result = dot(ref, normal);
-
-    return result >= 0;
 }

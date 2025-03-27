@@ -4,7 +4,7 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.renderers.IAcceleratedRenderer;
 import com.github.argon4w.acceleratedrendering.core.buffers.graphs.IBufferGraph;
 import com.github.argon4w.acceleratedrendering.core.meshes.IMesh;
-import com.github.argon4w.acceleratedrendering.core.meshes.MeshCollector;
+import com.github.argon4w.acceleratedrendering.core.meshes.collectors.MeshCollector;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.gui.font.glyphs.BakedGlyph;
@@ -67,7 +67,10 @@ public class AcceleratedBakedGlyphRenderer implements IAcceleratedRenderer<Void>
                 new Vector3f()
         );
 
-        mesh = AcceleratedTextRenderingFeature.getMeshBuilder().build(meshCollector);
+        mesh = AcceleratedTextRenderingFeature
+                .getMeshType()
+                .getBuilder()
+                .build(meshCollector);
 
         meshes.put(bufferGraph, mesh);
         mesh.write(

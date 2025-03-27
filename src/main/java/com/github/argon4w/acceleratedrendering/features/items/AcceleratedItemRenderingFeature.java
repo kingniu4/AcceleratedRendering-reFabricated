@@ -3,7 +3,6 @@ package com.github.argon4w.acceleratedrendering.features.items;
 import com.github.argon4w.acceleratedrendering.configs.FeatureConfig;
 import com.github.argon4w.acceleratedrendering.configs.FeatureStatus;
 import com.github.argon4w.acceleratedrendering.configs.PipelineSetting;
-import com.github.argon4w.acceleratedrendering.core.meshes.IMesh;
 import com.github.argon4w.acceleratedrendering.core.meshes.MeshType;
 
 import java.util.ArrayDeque;
@@ -28,10 +27,6 @@ public class AcceleratedItemRenderingFeature {
 
     public static MeshType getMeshType() {
         return FeatureConfig.CONFIG.acceleratedItemRenderingMeshType.get();
-    }
-
-    public static IMesh.Builder getMeshBuilder() {
-        return getMeshType().getBuilder();
     }
 
     public static void useVanillaPipeline() {
