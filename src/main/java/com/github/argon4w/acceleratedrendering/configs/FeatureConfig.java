@@ -12,8 +12,9 @@ public class FeatureConfig {
     public final ModConfigSpec.IntValue corePooledBufferSetSize;
     public final ModConfigSpec.IntValue corePooledElementBufferSize;
     public final ModConfigSpec.IntValue coreCachedImageSize;
+    public final ModConfigSpec.ConfigValue<FeatureStatus> coreDebugContextEnabled;
     public final ModConfigSpec.ConfigValue<FeatureStatus> coreForceTranslucentAcceleration;
-    public final ModConfigSpec.ConfigValue<FeatureStatus> coreCacheSamePose;
+    public final ModConfigSpec.ConfigValue<FeatureStatus> coreCacheIdenticalPose;
 
     public final ModConfigSpec.ConfigValue<FeatureStatus> acceleratedEntityRenderingFeatureStatus;
     public final ModConfigSpec.ConfigValue<PipelineSetting> acceleratedEntityRenderingDefaultPipeline;
@@ -77,17 +78,24 @@ public class FeatureConfig {
                 .translation("acceleratedrendering.configuration.core_settings.cached_image_size")
                 .defineInRange("cached_image_size", 32, 1, Integer.MAX_VALUE);
 
+        coreDebugContextEnabled = builder
+                .comment("- DISABLED: Debug context will be disabled, which may cause significant rendering glitches on some NVIDIA cards because of the \"theaded optimization\".")
+                .comment("- ENABLED: Debug context will be enabled, which can prevent NVIDIA driver from applying the \"threaded optimization\" that causes the glitches.")
+                .translation("acceleratedrendering.configuration.core_settings.debug_context")
+                .gameRestart()
+                .defineEnum("debug_context", FeatureStatus.ENABLED);
+
         coreForceTranslucentAcceleration = builder
                 .comment("- DISABLED: Translucent RenderType will fallback to vanilla rendering pipeline if the accelerated pipeline does not support translucent sorting unless mods explicitly enable force translucent acceleration temporarily when rendering their own faces.")
                 .comment("- ENABLED: Translucent RenderType will still be rendered in accelerated pipeline even if the pipeline does not support translucent sorting unless mods explicitly disable force translucent acceleration temporarily when rendering their own faces.")
                 .translation("acceleratedrendering.configuration.core_settings.force_translucent_acceleration")
                 .defineEnum("force_translucent_acceleration", FeatureStatus.DISABLED);
 
-        coreCacheSamePose = builder
-                .comment("- DISABLED: Poses with same transform matrix and normal matrix that used to transform vertices will not be cached in buffer which slightly decreases CPU pressure but increase VRAM usage unless mods explicitly disable it when rendering.")
-                .comment("- ENABLED: Poses with same transform matrix and normal matrix that used to transform vertices will be cached in buffer which save VRAM but slightly increase CPU pressure unless mods explicitly disable it when rendering.")
-                .translation("acceleratedrendering.configuration.core_settings.cache_same_pose")
-                .defineEnum("cache_same_pose", FeatureStatus.ENABLED);
+        coreCacheIdenticalPose = builder
+                .comment("- DISABLED: Poses with identical transform matrix and normal matrix that used to transform vertices will not be cached in buffer which slightly decreases CPU pressure but increase VRAM usage unless mods explicitly disable it when rendering.")
+                .comment("- ENABLED: Poses with identical transform matrix and normal matrix that used to transform vertices will be cached in buffer which save VRAM but slightly increase CPU pressure unless mods explicitly disable it when rendering.")
+                .translation("acceleratedrendering.configuration.core_settings.cache_identical_pose")
+                .defineEnum("cache_identical_pose", FeatureStatus.ENABLED);
 
         builder.pop();
 

@@ -45,10 +45,4 @@ public class OrientationCullingFeature {
     public static FeatureStatus getDefaultCullingSetting() {
         return FeatureConfig.CONFIG.orientationCullingDefaultCulling.get();
     }
-
-    public static void checkControllerState() {
-        if (!CULLING_CONTROLLER_STACK.isEmpty()) {
-            throw new IllegalStateException("Culling Controller stack not empty!");
-        }
-    }
 }

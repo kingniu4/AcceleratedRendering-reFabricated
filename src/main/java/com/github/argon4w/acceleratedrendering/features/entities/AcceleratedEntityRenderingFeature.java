@@ -47,10 +47,4 @@ public class AcceleratedEntityRenderingFeature {
     public static PipelineSetting getDefaultPipelineSetting() {
         return FeatureConfig.CONFIG.acceleratedEntityRenderingDefaultPipeline.get();
     }
-
-    public static void checkControllerState() {
-        if (!PIPELINE_CONTROLLER_STACK.isEmpty()) {
-            throw new IllegalStateException("Default pipeline Controller stack not empty!");
-        }
-    }
 }

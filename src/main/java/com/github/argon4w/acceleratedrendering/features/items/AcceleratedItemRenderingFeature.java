@@ -76,14 +76,4 @@ public class AcceleratedItemRenderingFeature {
     public static FeatureStatus getDefaultBakeQuadMeshSetting() {
         return FeatureConfig.CONFIG.acceleratedItemRenderingBakeMeshForQuads.get();
     }
-
-    public static void checkControllerState() {
-        if (!PIPELINE_CONTROLLER_STACK.isEmpty()) {
-            throw new IllegalStateException("Default pipeline Controller stack not empty!");
-        }
-
-        if (!BAKE_QUAD_MESH_CONTROLLER_STACK.isEmpty()) {
-            throw new IllegalStateException("Bake quad mesh Controller stack not empty!");
-        }
-    }
 }

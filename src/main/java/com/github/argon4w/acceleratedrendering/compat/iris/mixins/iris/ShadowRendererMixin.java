@@ -56,15 +56,6 @@ public class ShadowRendererMixin implements IShadowBufferSourceGetter {
         IrisCompatBuffers.GLYPH_SHADOW.clearBuffers();
     }
 
-    @Inject(method = "renderShadows", at = @At("TAIL"))
-    public void checkControllerState(
-            LevelRendererAccessor levelRenderer,
-            Camera playerCamera,
-            CallbackInfo ci
-    ) {
-        IrisCompatFeature.checkControllerState();
-    }
-
     @Unique
     @Override
     public MultiBufferSource.BufferSource getShadowBufferSource() {

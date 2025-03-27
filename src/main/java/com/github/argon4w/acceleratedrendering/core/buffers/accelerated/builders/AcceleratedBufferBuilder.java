@@ -333,7 +333,7 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 
     @Override
     public void beginTransform(Matrix4f transform, Matrix3f normal) {
-        if (CoreFeature.shouldCacheSamePose()
+        if (CoreFeature.shouldCacheIdenticalPose()
                 && transform.equals(cachedTransform)
                 && normal.equals(cachedNormal)
         ) {

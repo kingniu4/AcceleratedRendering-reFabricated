@@ -52,10 +52,4 @@ public class AcceleratedBlockEntityRenderingFeature {
     public static PipelineSetting getDefaultPipelineSetting() {
         return FeatureConfig.CONFIG.acceleratedBlockEntityRenderingDefaultPipeline.get();
     }
-
-    public static void checkControllerState() {
-        if (!PIPELINE_CONTROLLER_STACK.isEmpty()) {
-            throw new IllegalStateException("Default pipeline Controller stack not empty!");
-        }
-    }
 }

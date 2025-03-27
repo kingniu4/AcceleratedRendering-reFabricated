@@ -82,14 +82,4 @@ public class IrisCompatFeature {
     public static FeatureStatus getDefaultPolygonProcessingSetting() {
         return FeatureConfig.CONFIG.irisCompatPolygonProcessing.get();
     }
-
-    public static void checkControllerState() {
-        if (!SHADOW_CULLING_CONTROLLER_STACK.isEmpty()) {
-            throw new IllegalStateException("Shadow Culling Controller stack not empty!");
-        }
-
-        if (!POLYGON_PROCESSING_CONTROLLER_STACK.isEmpty()) {
-            throw new IllegalStateException("Polygon Processing Controller stack not empty!");
-        }
-    }
 }
