@@ -15,18 +15,8 @@ public class SpriteBufferGraph implements IBufferGraph {
     }
 
     @Override
-    public float mapU(float u) {
-        return parent.mapU(sprite.getU(u));
-    }
-
-    @Override
-    public float mapV(float v) {
-        return parent.mapV(sprite.getV(v));
-    }
-
-    @Override
     public int hashCode() {
-        return Objects.hash(parent, sprite);
+        return parent.hashCode() ^ sprite.hashCode();
     }
 
     @Override

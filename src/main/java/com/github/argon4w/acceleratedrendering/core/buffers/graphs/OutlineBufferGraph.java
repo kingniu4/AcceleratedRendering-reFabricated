@@ -13,18 +13,8 @@ public class OutlineBufferGraph implements IBufferGraph {
     }
 
     @Override
-    public float mapU(float u) {
-        return u;
-    }
-
-    @Override
-    public float mapV(float v) {
-        return v;
-    }
-
-    @Override
     public int hashCode() {
-        return Objects.hash(parent, color);
+        return parent.hashCode() ^ color;
     }
 
     @Override

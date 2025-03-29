@@ -11,16 +11,6 @@ public class BlankBufferGraph implements IBufferGraph {
     }
 
     @Override
-    public float mapU(float u) {
-        return u;
-    }
-
-    @Override
-    public float mapV(float v) {
-        return v;
-    }
-
-    @Override
     public int hashCode() {
         return renderType.hashCode();
     }

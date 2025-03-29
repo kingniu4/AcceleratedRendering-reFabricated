@@ -1,6 +1,5 @@
 package com.github.argon4w.acceleratedrendering.core.buffers.graphs;
 
-import com.github.argon4w.acceleratedrendering.core.utils.MatrixUtils;
 import org.joml.Matrix4f;
 
 import java.util.Objects;
@@ -16,18 +15,8 @@ public class DecalBufferGraph implements IBufferGraph {
     }
 
     @Override
-    public float mapU(float u) {
-        return parent.mapU(u);
-    }
-
-    @Override
-    public float mapV(float v) {
-        return parent.mapV(v);
-    }
-
-    @Override
     public int hashCode() {
-        return Objects.hash(parent, localTransform);
+        return parent.hashCode() ^ localTransform.hashCode();
     }
 
     @Override
@@ -47,6 +36,6 @@ public class DecalBufferGraph implements IBufferGraph {
         DecalBufferGraph that = (DecalBufferGraph) obj;
 
         return Objects.equals(parent, that.parent)
-                && MatrixUtils.equals(localTransform, that.localTransform, 1e-5f);
+                && localTransform.equals(that.localTransform, 1e-5f);
     }
 }
